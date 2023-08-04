@@ -18,7 +18,7 @@ const [responseIMG, setResponseIMG] = useState([]);
 
 const [curPg, setCurPg] = useState('');
 const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
+// const [error, setError] = useState(null);
 const [totall, setTotall] = useState('');
 const [status, setStatus] = useState('');
 
@@ -28,17 +28,17 @@ const [status, setStatus] = useState('');
     setInputSearch(inputSearch);
     setCurPg(1);
     setResponseIMG([])
-    console.log(inputSearch, "Є");
+    // console.log(inputSearch, "Є");
   };
 
   
   // давай ще
-  // const givMeMore = () => {
-  //   setCurPg(prevState => prevState + 1);
-  //   };
+  const givMeMore = () => {
+    setCurPg(prevCurpg => prevCurpg + 1);
+    };
     // запитувач
 
-    // +++++++++++++++++++++++++++++++
+
 useEffect(
   ()=> 
 {
@@ -48,58 +48,48 @@ useEffect(
   }
   //  вмикання  лодеря...
   setLoading(true);
- fetchIMG(inputsearch)
+ fetchIMG(inputsearch, curPg)
  
  .then(respImg => 
   {
     
   // якщо пагінація
-  // curPg > 1 && respImg.request.status === 200
-  //   ? // this.setState({responseIMG: [...this.state.responseIMG, ...respImg.data.hits]})
-  //    setResponseIMG(prevState => ([...prevState.responseIMG, ...respImg.data.hits],
-  //          )
-  //     )
-  //  : // якщо вперше
+  curPg > 1 && status === 200
+    ? // this.setState({responseIMG: [...this.state.responseIMG, ...respImg.data.hits]})
+     setResponseIMG(prevResponseIMG => ([...prevResponseIMG, ...respImg.data.hits]),
+     )
+  : // якщо вперше
   setResponseIMG(respImg.data.hits);
   
   // **************f
   setTotall(respImg.data.totalHits);
   // що знайшли
   setStatus(200);
-      if (
-        responseIMG.length !== 0 && curPg === 1 && status === 200  
-      )
-       {
-        toast.success(
-          `🐒Ми знайшли ${totall} 🍌..., світлин 🐒`
-          );
-                  }
-// нічого не знайшли
-if (respImg.data.hits.length === 0 && status === 200 ) {
-  toast.warn(`🐒 Ми нічого не знайшли 🐒`);
-  }
-
-}
+     }
 )
 .catch((error) =>  {
-  setError( error );
-  toast.warn(`🐒Отакої! ${error} 🐒`)
+  // setError( error );
+  toast.warn(`🐒Отакої! ${error} 🐒`);
 })
-// return error
 // вимикання лодеря
 .finally(()=>{
   setLoading(false)
 }) 
-}, [inputsearch, responseIMG.length, curPg, status, totall, error])
-
-
-
-
-
-
-
-
-      
+// return ()=> {setCurPg(curPg +1)}
+}, [curPg, inputsearch, status])
+// скільки знайшли
+useEffect(()=> {if (
+  responseIMG.length !== 0 && curPg === 1 && status === 200  
+)
+ {
+  toast.success(
+    `🐒Ми знайшли ${totall} 🍌..., світлин 🐒`
+    );
+            }},[curPg, responseIMG.length, status, totall])
+// // нічого не знайшли
+useEffect(()=>{if (responseIMG.length === 0 && status === 200 ) {
+  toast.warn(`🐒 Ми нічого не знайшли 🐒`);
+  }},[responseIMG.length, status])
 
     return (
       <div>
@@ -130,12 +120,12 @@ if (respImg.data.hits.length === 0 && status === 200 ) {
         )}
 
         {/* кнопка */}
-        {/* {(responseIMG.length !== 0 && loading === false) && ( */}
+        {(responseIMG.length !== 0 && loading === false) && (
           <Button
             // // метод пропс попвнення галереї
-            // givMeMore={givMeMore}
+            givMeMore={givMeMore}
           />
-        {/* )} */}
+        )} 
       </div>
     );
   }

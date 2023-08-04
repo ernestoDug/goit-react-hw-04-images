@@ -11,7 +11,7 @@ const Searchbar = ({ onSubmit }) => {
 
   // шукач
   const changer = event => {
-    console.log(event);
+    // console.log(event);
     setFindImages(event.target.value.toLowerCase());
   };
   // відпрвник

@@ -74,6 +74,10 @@ useEffect(
           );
                   }
 // нічого не знайшли
+if (respImg.data.hits.length === 0 && status === 200 ) {
+  toast.warn(`🐒 Ми нічого не знайшли 🐒`);
+  }
+
 }
 )
 .catch((error) =>  {
@@ -88,9 +92,6 @@ useEffect(
 }, [inputsearch, responseIMG.length, curPg, status, totall, error])
 
 
-// if (responseIMG.length === 0 && status === 200 ) {
-//   toast.warn(`🐒 Ми нічого не знайшли 🐒`);
-//   }
 
 
 

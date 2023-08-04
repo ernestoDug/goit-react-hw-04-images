@@ -14,11 +14,12 @@ const  App = () => {
   
 const [inputsearch, setInputSearch] = useState('');
 const [responseIMG, setResponseIMG] = useState([]);
-const [isLoading, setIsloading] = useState(false);
+// const [isLoading, setIsloading] = useState(false);
 const [curPg, setCurPg] = useState('');
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState(null);
 const [totall, setTotall] = useState('')
+const [status, setStatus] = useState('')
 
 
   // отримувач з форми скидач сторінки та галереї
@@ -26,70 +27,81 @@ const [totall, setTotall] = useState('')
     setInputSearch(inputSearch);
     setCurPg(1);
     setResponseIMG([])
-    // console.log(this.state.responseIMG, "Є");
+    console.log(inputSearch, "Є");
   };
 
   
   // давай ще
-  const givMeMore = () => {
-    setCurPg(prevState => prevState + 1);
-    };
+  // const givMeMore = () => {
+  //   setCurPg(prevState => prevState + 1);
+  //   };
     // запитувач
 
+    // +++++++++++++++++++++++++++++++
 useEffect(
   ()=> 
 {
- //  вмикання  лодеря...
- setLoading(true);
-  fetchIMG(inputsearch, curPg)
+  if(!inputsearch)
+  {
+    return
+  }
+  //  вмикання  лодеря...
+  setLoading(true);
+ fetchIMG(inputsearch)
  
  .then(respImg => 
   {
+    
   // якщо пагінація
   // curPg > 1 && respImg.request.status === 200
   //   ? // this.setState({responseIMG: [...this.state.responseIMG, ...respImg.data.hits]})
   //    setResponseIMG(prevState => ([...prevState.responseIMG, ...respImg.data.hits],
-  //     setTotall(respImg.data.totalHits)
   //          )
   //     )
   //  : // якщо вперше
-      setResponseIMG(respImg.data.hits);
+  setResponseIMG(respImg.data.hits);
+  
+  // **************f
+  setTotall(respImg.data.totalHits);
   // що знайшли
-   }
- )
-
-.catch((error) =>  {
-setError( error );
-toast.warn(`🐒Отакої! ${error} 🐒`)
-})
-// вимикання лодеря
-
-.finally(()=>{
-  setIsloading(false)
-  }) 
-
-
-}, [inputsearch, curPg])
-if (
-  responseIMG.length !== 0 &&
-  curPg === 1
-)
- {
-  toast.success(
-    `🐒Ми знайшли ${totall} 🍌..., світлин 🐒`
-  );
-}
-
+  setStatus(200);
+      if (
+        responseIMG.length !== 0 && curPg === 1 && status === 200  
+      )
+       {
+        toast.success(
+          `🐒Ми знайшли ${totall} 🍌..., світлин 🐒`
+          );
+                  }
 // нічого не знайшли
-if (responseIMG.length === 0) {
-  toast.warn(`🐒 Ми нічого не знайшли 🐒`);
 }
+)
+.catch((error) =>  {
+  setError( error );
+  toast.warn(`🐒Отакої! ${error} 🐒`)
+})
+// return error
+// вимикання лодеря
+.finally(()=>{
+  setLoading(false)
+}) 
+}, [inputsearch, responseIMG.length, curPg, status, totall, error])
+
+
+// if (responseIMG.length === 0 && status === 200 ) {
+//   toast.warn(`🐒 Ми нічого не знайшли 🐒`);
+//   }
+
+
+
+
+
 
       
 
     return (
       <div>
-        <Searchbar onSubmit={givMeMore} />
+        <Searchbar onSubmit={submiterFromForm} />
         <ToastContainer
           position="top-center"
           autoClose={2000}
@@ -119,7 +131,7 @@ if (responseIMG.length === 0) {
         {/* {(responseIMG.length !== 0 && loading === false) && ( */}
           <Button
             // // метод пропс попвнення галереї
-            givMeMore={givMeMore}
+            // givMeMore={givMeMore}
           />
         {/* )} */}
       </div>

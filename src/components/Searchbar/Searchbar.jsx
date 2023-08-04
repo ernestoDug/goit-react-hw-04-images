@@ -27,10 +27,10 @@ const  Searchbar = ({onSubmit}) => {
     }
     // пропсик від апп для отримання
 
-    onSubmit({findImages});
+    onSubmit(findImages);
 
     // очищувач форми
-    setFindImages('' );
+    setFindImages( '');
   };
 
 

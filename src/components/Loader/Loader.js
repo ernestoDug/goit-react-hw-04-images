@@ -4,11 +4,11 @@ import { BulletList } from 'react-content-loader';
 
 const Loader = ({ props }) => (
   <BulletList
-    height={140}
+    height={300}
     speed={1}
     backgroundColor={'#829aec'}
     foregroundColor={'#4757d1'}
-    viewBox="0 0 380 70"
+    viewBox="0 0 500 70"
   ></BulletList>
 );
 

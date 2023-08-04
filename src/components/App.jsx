@@ -15,11 +15,12 @@ const  App = () => {
 const [inputsearch, setInputSearch] = useState('');
 const [responseIMG, setResponseIMG] = useState([]);
 // const [isLoading, setIsloading] = useState(false);
+
 const [curPg, setCurPg] = useState('');
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState(null);
-const [totall, setTotall] = useState('')
-const [status, setStatus] = useState('')
+const [totall, setTotall] = useState('');
+const [status, setStatus] = useState('');
 
 
   // отримувач з форми скидач сторінки та галереї
@@ -117,14 +118,14 @@ if (respImg.data.hits.length === 0 && status === 200 ) {
         />
 
         {/* лоадер чи галерея?  */}
-        {loading === true && <Loader />}
 
         {responseIMG.length !== 0 && (
           <>
             <ImageGallery
               // метод пропс для галерії
               imageForGalery={responseIMG}
-            />
+              />
+              {loading === true && <Loader />}
           </>
         )}
 

@@ -1,13 +1,12 @@
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import css from './ImageGalleryItem.module.css';
 
 import Modal from 'components/Modal/Modal';
-import css from './ImageGalleryItem.module.css';
 
 const ImageGalleryItem = ({ largeImageURL, webformatURL, tags }) => {
   const [showMod, setShowMod] = useState(false);
-  // const[closMod, setClosMod]=useState(true)
   const [modalURL, setModalURL] = useState('');
 
   // відкривач модалу

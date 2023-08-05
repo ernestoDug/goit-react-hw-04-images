@@ -16,7 +16,5 @@ export const fetchIMG = (searchWord, page) => {
       },
     }
   );
-  // console.log(page, '8889')
   return responseIMG;
 };
-// fetchIMG.then(console.log(responseIMG.data))

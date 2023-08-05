@@ -8,20 +8,22 @@ import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
 import { fetchIMG } from '../helpers/fetchIMG';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
+export const Context = React.createContext();
 
 const App = () => {
   const [inputsearch, setInputSearch] = useState('');
   const [responseIMG, setResponseIMG] = useState([]);
   const [curPg, setCurPg] = useState('');
   const [loading, setLoading] = useState(false);
+
   // для умов сповіщенням 1
   const [status, setStatus] = useState('');
   // для умов сповіщенням 2
   const [respHits, setRespHits] = useState([]);
-    // для умов сповіщенням 3
+  // для умов сповіщенням 3
   const [totall, setTotall] = useState('');
-
 
   // отримувач з форми скидач сторінки та галереї
   const submiterFromForm = inputSearch => {
@@ -53,9 +55,9 @@ const App = () => {
             ])
           : // якщо вперше
             setResponseIMG(respImg.data.hits);
-//  для сповіщення 1
-          setTotall(respImg.data.totalHits);
-// для  сповіщення 2
+        //  для сповіщення 1
+        setTotall(respImg.data.totalHits);
+        // для  сповіщення 2
         setRespHits(respImg.data.hits);
         // для сповіщення 3
         setStatus(200);
@@ -63,14 +65,12 @@ const App = () => {
       .catch(error => {
         toast.warn(`🐒Отакої! ${error} 🐒`);
       })
-      // вимикання лодеря
+      // лодер -
       .finally(() => {
         setLoading(false);
       });
   }, [curPg, inputsearch, status]);
-
-
-
+  // --------------------------------------------------------------------
   // скільки знайшли
   useEffect(() => {
     if (responseIMG.length !== 0 && curPg === 1 && status === 200) {
@@ -82,44 +82,43 @@ const App = () => {
     if (respHits.length === 0 && status === 200) {
       toast.warn(`🐒 Ми нічого не знайшли 🐒`);
     }
-  }, [respHits.length, status ]);
+  }, [respHits.length, status]);
 
   return (
-    <div>
-      <Searchbar onSubmit={submiterFromForm} />
-      <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-
-      {/* лоадер чи галерея?  */}
-
-      {responseIMG.length !== 0 && (
-        <>
-          <ImageGallery
-            // метод пропс для галерії
-            imageForGalery={responseIMG}
-          />
-          {loading === true && <Loader />}
-        </>
-      )}
-
-      {/* кнопка */}
-      {responseIMG.length !== 0 && loading === false && (
-        <Button
-          // // метод пропс попвнення галереї
-          givMeMore={givMeMore}
+    <Context.Provider
+      value={{
+        imageForGalery: responseIMG,
+        givMeMore: givMeMore,
+        onSubmit: submiterFromForm,
+      }}
+    >
+      <div>
+        <Searchbar />
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
         />
-      )}
-    </div>
+
+        {/* лоадер чи галерея?  */}
+
+        {responseIMG.length !== 0 && (
+          <>
+            <ImageGallery />
+            {loading === true && <Loader />}
+          </>
+        )}
+        {/* кнопка */}
+        {responseIMG.length !== 0 && loading === false && <Button />}
+      </div>
+    </Context.Provider>
   );
 };
 

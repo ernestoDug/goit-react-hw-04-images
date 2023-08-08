@@ -102,15 +102,18 @@ const App = () => {
 
       {/* лоадер чи галерея?  */}
 
-      {responseIMG.length !== 0 && (
-        <>
-          <ImageGallery
-            // метод пропс для галерії
-            imageForGalery={responseIMG}
-          />
-          {loading === true && <Loader />}
-        </>
+      {/* лоадер чи галерея?  */}
+
+     
+{responseIMG.length !== 0 && (
+  <>
+    <ImageGallery
+      // метод пропс для галерії
+      imageForGalery={responseIMG}
+    />
+  </>
       )}
+       {loading === true && <Loader />}
 
       {/* кнопка */}
       {responseIMG.length !== 0 && loading === false && (

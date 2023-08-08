@@ -1,16 +1,12 @@
-// import PropTypes from 'prop-types';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-// npm i react-toastify
-import { useContext } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+// npm i react-toastify
 import css from './Searchbar.module.css';
 
-import { Context } from 'components/App';
 
-const Searchbar = () => {
-  const context = useContext(Context);
-
+const Searchbar = ({ onSubmit }) => {
   const [findImages, setFindImages] = useState('');
 
   // шукач
@@ -27,7 +23,7 @@ const Searchbar = () => {
       return;
     }
     // для апп
-    context.onSubmit(findImages);
+    onSubmit(findImages);
 
     // очищувач форми
     setFindImages('');
@@ -57,8 +53,8 @@ const Searchbar = () => {
 };
 
 // проптайпи
-// Searchbar.propTypes = {
-//   onSubmit: PropTypes.func.isRequired,
-// };
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default Searchbar;

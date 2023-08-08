@@ -1,27 +1,19 @@
-// import PropTypes from 'prop-types';
-import { useContext } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
+
 import css from './Button.module.css';
 
-import { Context } from 'components/App';
-
-const Button = () => {
-  const context = useContext(Context);
-
+const Button = ({ givMeMore }) => {
   return (
-    <button
-      type="button"
-      className={css.button}
-      onClick={() => context.givMeMore()}
-    >
+    <button type="button" className={css.button} onClick={() => givMeMore()}>
       Завантажити ще 🐵
     </button>
   );
 };
 
 // проптайпи
-// Button.propTypes = {
-//   givMeMore: PropTypes.func.isRequired,
-// };
+Button.propTypes = {
+  givMeMore: PropTypes.func.isRequired,
+};
 
 export default Button;

@@ -19,9 +19,8 @@ const App = () => {
   const [status, setStatus] = useState('');
   // для умов сповіщенням 2
   const [respHits, setRespHits] = useState([]);
-    // для умов сповіщенням 3
+  // для умов сповіщенням 3
   const [totall, setTotall] = useState('');
-
 
   // отримувач з форми скидач сторінки та галереї
   const submiterFromForm = inputSearch => {
@@ -53,9 +52,9 @@ const App = () => {
             ])
           : // якщо вперше
             setResponseIMG(respImg.data.hits);
-//  для сповіщення 1
-          setTotall(respImg.data.totalHits);
-// для  сповіщення 2
+        //  для сповіщення 1
+        setTotall(respImg.data.totalHits);
+        // для  сповіщення 2
         setRespHits(respImg.data.hits);
         // для сповіщення 3
         setStatus(200);
@@ -69,20 +68,15 @@ const App = () => {
       });
   }, [curPg, inputsearch, status]);
 
-
-
   // скільки знайшли
   useEffect(() => {
     if (responseIMG.length !== 0 && curPg === 1 && status === 200) {
       toast.success(`🐒Ми знайшли ${totall} 🍌..., світлин 🐒`);
     }
-  }, [curPg, responseIMG.length, status, totall]);
-  // // нічого не знайшли
-  useEffect(() => {
     if (respHits.length === 0 && status === 200) {
       toast.warn(`🐒 Ми нічого не знайшли 🐒`);
     }
-  }, [respHits.length, status ]);
+  }, [curPg, respHits.length, responseIMG.length, status, totall]);
 
   return (
     <div>
@@ -104,16 +98,15 @@ const App = () => {
 
       {/* лоадер чи галерея?  */}
 
-     
-{responseIMG.length !== 0 && (
-  <>
-    <ImageGallery
-      // метод пропс для галерії
-      imageForGalery={responseIMG}
-    />
-  </>
+      {responseIMG.length !== 0 && (
+        <>
+          <ImageGallery
+            // метод пропс для галерії
+            imageForGalery={responseIMG}
+          />
+        </>
       )}
-       {loading === true && <Loader />}
+      {loading === true && <Loader />}
 
       {/* кнопка */}
       {responseIMG.length !== 0 && loading === false && (
